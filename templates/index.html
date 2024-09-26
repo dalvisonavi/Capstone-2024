@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1 class="heading">Inventory Management System</h1>
+        <h3 class="title">Login Form</h3>
+    </header>
+
+    <div class="container">
+        <div class="slider"></div>
+        <div class="btn">
+            <button class="login" onclick="showLogin()">Login</button>
+            <button class="Signup" onclick="showSignup()">Signup</button>
+        </div>
+
+        <div class="form-section">
+            <form action="/login" method="POST" id="login-form">
+                <div class="login-box">
+                    <input type="username" name="username" class="username ele" placeholder="username" required>
+                    <input type="password" name="password" class="password ele" placeholder="password" required>
+                    <button class="clkbtn" type="submit">Login</button>
+                </div>
+            </form>
+
+
+            <form action="/Signup" method="POST" id="Signup-form">
+                <div class="signup-box">
+                    <input type="text" name="name" class="name ele" placeholder="Enter your name" required>
+                    <input type="username" name="username" class="email ele" placeholder="youremail@email.com" required>
+                    <input type="password" name="password" class="password ele" placeholder="password" required>
+                    <input type="password" name="confirm_password" class="password-confirm ele" placeholder="Confirm password" required>
+                    <button class="clkbtn" type="submit">Sign Up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+   
+    <script>
+        function showLogin() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('Signup-form').style.display = 'none';
+        }
+
+        function showSignup() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('Signup-form').style.display = 'block';
+        }
+    </script>
+    
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+</body>
+</html>
