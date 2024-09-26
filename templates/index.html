@@ -7,9 +7,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+
+    <style>
+        body{
+            background-image: url('{{ url_for('static', filename='images/image.png') }}');
+            background-size: cover;
+            background-repeat: no-repeat; 
+        }
+    </style>
+
     <header>
         <h1 class="heading">Inventory Management System</h1>
-        <h3 class="title">Login Form</h3>
     </header>
 
     <div class="container">
