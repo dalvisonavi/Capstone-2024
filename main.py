@@ -5,8 +5,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 
 # Connect to MongoDB
-client = MongoClient('mongodb+srv://saidivya:saidivya1234@inventory.xp13j.mongodb.net/?retryWrites=true&w=majority&appName=Inventory')  # Replace with your MongoDB URI
-db = client['Inventory']  # Replace 'loginDB' with your database name
+client = MongoClient('mongodb+srv://saidivya:saidivya1234@inventory.xp13j.mongodb.net/?retryWrites=true&w=majority&appName=Inventory') 
+db = client['Inventory'] 
 users_collection = db['users'] 
 
 @app.route("/")
@@ -29,15 +29,12 @@ def login():
 def register():
     username = request.form['username']
     password = request.form['password']
-    
-    # Check if user already exists
+
     if users_collection.find_one({'username': username}):
         return jsonify({'message': 'User already exists!'})
     
-    # Hash the password before storing it
     hashed_password = generate_password_hash(password)
 
-    # Create user document
     user = {
         'username': username,
         'password': hashed_password
