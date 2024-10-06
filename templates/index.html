@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <style>
+        body {
+            background-image: url('{{ url_for('static', filename='images/image1.png') }}');
+            background-size: cover;
+            background-repeat: no-repeat; 
+        }
+    </style>
+
+    <!-- Login form container -->
+    <div class="container">
+        <h2 class="heading">Login</h2>
+        <form action="{{ url_for('login') }}" method="POST">
+            <div class="input-group">
+                <input type="text" class="ele" name="username" required placeholder="youremail@example.com ">
+                <label>Username</label>
+            </div>
+            <div class="input-group">
+                <input type="password" class="ele" name="password" required placeholder="123456">
+                <label>Password</label>
+            </div>
+            <button type="submit" class="clkbtn">Login</button>
+        </form>
+        <p class="footer">Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+    </div>
+
+</body>
+</html>
