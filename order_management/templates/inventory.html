@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='inventory.css') }}" />
+</head>
+<body>
+    <h1>Inventory Management</h1>
+    <table id="itemTable" class="table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Expiry Date</th>
+                <th>Previous Stock</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <br /><br />
+    <form id="inventoryForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required /><br />
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" required /><br />
+
+        <label for="expiryDate">Expiry Date:</label>
+        <input type="date" id="expiryDate" required /><br />
+
+        <label for="prevStock">Previous Stock:</label>
+        <input type="number" id="prevStock" required /><br />
+
+        <button type="submit">Add Item</button>
+    </form>
+
+    <script src="{{ url_for('static', filename='inventory.js') }}"></script>
+    <script>
+        document.getElementById("inventoryForm").onsubmit = addItem;
+
+        function addItem(event) {
+            event.preventDefault();
+
+            const itemName = document.getElementById("name").value;
+            const itemQuantity = document.getElementById("quantity").value;
+            const itemExpiryDate = document.getElementById("expiryDate").value;
+            const itemPrevStock = document.getElementById("prevStock").value;
+
+            const data = {
+                name: itemName,
+                quantity: parseInt(itemQuantity),
+                expirydate: new Date(itemExpiryDate).toLocaleDateString(),
+                prevStock: parseInt(itemPrevStock),
+            };
+
+            fetch("/add_items", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result.message);
+                addItemToTable(data);
+                window.location.reload()
+                document.getElementById("inventoryForm").reset();
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        }
+
+        function addItemToTable(item) {
+            const tableBody = document.getElementById("itemTable").getElementsByTagName("tbody")[0];
+            const row = tableBody.insertRow();
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td>${item.quantity}</td>
+                <td>${item.expiry_date}</td>
+                <td>${item.previous_stock}</td>
+                <td>
+                    <button class="edit-btn" onclick="editRow(this)">Edit</button>
+                    <button class="delete-btn" onclick="deleteRow(this)">Delete</button>
+                </td>
+            `;
+        }
+
+        function editRow(button) {
+            const row = button.parentNode.parentNode;
+            const name = row.cells[0].innerText;
+            const quantity = row.cells[1].innerText;
+            const expiryDate = row.cells[2].innerText;
+            const prevStock = row.cells[3].innerText;
+
+            
+            document.getElementById("name").value = name;
+            document.getElementById("quantity").value = quantity;
+            document.getElementById("expiryDate").value = new Date(expiryDate)
+            .toISOString()
+            .substring(0, 10);
+        document.getElementById("prevStock").value = prevStock;
+
+            const form = document.getElementById("inventoryForm");
+            form.onsubmit = function (event) {
+                event.preventDefault();
+                updateItem(row);
+            };
+        }
+
+        function updateItem(row) {
+            const updatedName = document.getElementById("name").value;
+            const updatedQuantity = document.getElementById("quantity").value;
+            const updatedExpiryDate = document.getElementById("expiryDate").value;
+            const updatedPrevStock = document.getElementById("prevStock").value;
+
+            const data = {
+                name: updatedName,
+                quantity: parseInt(updatedQuantity),
+                expirydate: new Date(updatedExpiryDate).toLocaleDateString(),
+                prevStock: parseInt(updatedPrevStock),
+            };
+
+            fetch(`/update_item/${row.cells[0].innerText}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result.message);
+
+                row.cells[0].innerText = updatedName;
+                row.cells[1].innerText = updatedQuantity;
+                row.cells[2].innerText = new Date(updatedExpiryDate).toLocaleDateString();
+                row.cells[3].innerText = updatedPrevStock;
+
+                document.getElementById("inventoryForm").reset();
+                document.getElementById("inventoryForm").onsubmit = addItem;
+
+                window.location.reload();
+            })
+            .catch((error) => console.error("Error updating item:", error));
+        }
+
+        function deleteRow(button) {
+            const row = button.parentNode.parentNode;
+            const name = row.cells[0].innerText;
+
+            fetch(`/delete_item/${name}`, {
+                method: "DELETE",
+            })
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result.message);
+                row.remove();
+            })
+            .catch((error) => console.error("Error deleting item:", error));
+        }
+
+        fetch("/get_items")
+        .then((response) => response.json())
+        .then((data) => {
+            const tableBody = document.getElementById("itemTable").getElementsByTagName("tbody")[0];
+            data.forEach((item) => {
+                console.log(item)
+                addItemToTable(item);
+            });
+        })
+        .catch((error) => console.error("Error fetching items:", error));
+    </script>
+</body>
+</html>

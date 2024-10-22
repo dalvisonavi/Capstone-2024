@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='order_management.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>Order Management</h1>
+    </header>
+
+    <div class="container">
+        <h2>Add New Supplier</h2>
+        <form id="supplierForm" method="POST" action="/order_management">
+            <label for="supplierName">Supplier Name</label>
+            <input type="text" id="supplierName" name="supplier_name" required>
+
+            <label for="supplierEmail">Supplier Email</label>
+            <input type="email" id="supplierEmail" name="contact_email" required>
+
+            <label for="supplierPhone">Supplier Phone</label>
+            <input type="text" id="supplierPhone" name="contact_phone" required>
+
+            <label for="productsSupplied">Products Supplied (Ex:flour, sugar)</label>
+            <input type="text" id="productsSupplied" name="products" required>
+
+            <button type="submit" class="add-btn">Add Supplier</button>
+        </form>
+
+        <h2>Existing Suppliers</h2>
+        <table id="supplierTable">
+            <thead>
+                <tr>
+                    <th>Supplier Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Products Supplied</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for supplier in suppliers %}
+                <tr data-id="{{supplier['_id']}}">
+                    <td>{{ supplier['supplier_name'] }}</td>
+                    <td>{{ supplier['contact_email'] }}</td>
+                    <td>{{ supplier['contact_phone'] }}</td>
+                    <td>{{ supplier['products'] | join(', ') }}</td>
+                    <td>
+                        <button class="edit-btn" onclick="editSupplier('{{ supplier['_id'] }}', this)">Edit</button>
+                        <button class="delete-btn" onclick="deleteSupplier('{{ supplier['_id'] }}')">Delete</button>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">No suppliers found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Low Stock Items</h2>
+        <table id="lowStockTable">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Current Stock</th> 
+                    <th>Triggers</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in low_stock_items %}
+                <tr>
+                    <td>{{ item['name'] }}</td>
+                    <td>{{ item['quantity'] }}</td>
+                    <td>
+                        <!-- Trigger order button -->
+                        <form action="{{ url_for('trigger_order', product_id=item['_id']) }}" method="POST">
+                            <button type="submit" class="trigger-btn">send msg</button>
+                        </form>
+                    </td>
+                    
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">No low stock items found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="{{ url_for('static', filename='order_management.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Cake Shop Inventory Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <style>
+        body {
+            background-image: url('{{ url_for('static', filename='images/background.jpg') }}'); /* Use Flask's url_for */
+            background-size: cover; /* Cover the entire screen */
+            background-repeat: no-repeat; /* Prevent repetition */
+            margin: 0; /* Remove default margin */
+            height: 100vh; /* Ensure full height */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#">Account</a></li>
+                    <li><a href="{{ url_for('inventory') }}">Inventory Management</a></li>
+                    <li><a href="{{url_for('order_management')}}">Order Management</a></li>
+                    <li><a href="#">End of Day Report</a></li>
+                    <li><a href="#">Wastage Log</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1></h1>
+            </header>
+        </main>
+    </div>
+</body>
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</html>
