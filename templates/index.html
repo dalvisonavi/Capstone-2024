@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Sidebar with buttons -->
+    <div id="sidebar">
+        <h2>Inventory</h2>
+        <button id="rawMaterialsButton">Raw Materials</button>
+        <button id="bakedMaterialsButton">Baked Materials</button>
+    </div>
+
+    <div id="content">
+        <!-- Content from the buttons will be loaded here -->
+    </div>
+
+    <!-- Load jQuery before your custom script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</body>
+</html>
