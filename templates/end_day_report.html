@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>End of Day Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='end_day_report.css') }}">
+</head>
+<body>
+    {% include 'dashboard.html' %}
+    <header id="typewriter-header">
+        <h1> End Day Report</h1>
+    </header>
+    
+    <div class="container">
+        <main class="content">
+            <h1>End of Day Report</h1>
+            <!-- Filter and Sorting Options -->
+            <div class="filter-sort">
+                <input type="text" id="searchInput" placeholder="Search product name..." />
+                <a href="{{ url_for('download_csv') }}"><button id="csvDownload">Download CSV</button></a>
+                <a href="{{ url_for('download_pdf') }}"><button id="pdfDownload">Download PDF</button></a>
+            </div>
+            <table class="styled-table" id="report-table">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)">Product Name &#x25B2;&#x25BC;</th>
+                        <th onclick="sortTable(1)">Stock Quantity &#x25B2;&#x25BC;</th>
+                        <th onclick="sortTable(2)">Sold Quantity &#x25B2;&#x25BC;</th>
+                        <th onclick="sortTable(3)">Expiry Date &#x25B2;&#x25BC;</th>
+                    </tr>
+                </thead>
+                <tbody id="report-body">
+                    {% for item in report_data %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.sold_quantity }}</td>
+                        <td>{{ item.expiry_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination">
+                <button id="prevPage">Prev</button>
+                <span id="pageNumber">1</span>
+                <button id="nextPage">Next</button>
+            </div>
+        </main>
+        <aside class="sidebar-right">
+            <h2>To Do</h2>
+            <ul>
+                <li><input type="checkbox"> Restock raw materials</li>
+                <li><input type="checkbox"> Review today's orders</li>
+                <li><input type="checkbox"> Check expiration dates</li>
+                <li><input type="checkbox"> Send customer emails</li>
+                <li><input type="checkbox"> Log wastage for today</li>
+            </ul>
+        </aside>
+    </div>
+
+    <script src="{{ url_for('static', filename='end_day_report.js') }}"></script>
+</body>
+</html>

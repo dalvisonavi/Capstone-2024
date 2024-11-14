@@ -1,0 +1,206 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color:#343a40;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+#typewriter-header {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    overflow: hidden; /* Ensures the text is hidden until animated */
+    white-space: nowrap; /* Prevents text from wrapping */
+    border-right: 3px solid white; /* Creates a cursor effect */
+    animation: typing 2s steps(30, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0; /* Start with no width */
+    }
+    to {
+        width: 100%; /* Expand to full width */
+    }
+}
+
+@keyframes blink-caret {
+    from, to {
+        border-color: transparent; /* Invisible cursor */
+    }
+    50% {
+        border-color: white; /* Visible cursor */
+    }
+}
+
+
+h1 {
+    margin: 0;
+}
+
+h2 {
+    margin-top: 30px;
+    color: #333;
+    padding: 20px;
+}
+
+.responsive-table {
+    width: 90%;
+    margin-bottom: 20px;
+    padding: 0px;
+    text-align:center;
+  }
+  .responsive-table li {
+    border-radius: 3px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+  }
+  .table-header {
+    background-color: #95A5A6;
+    color: #121111;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align:center;
+  }
+  .table-row:hover {
+    background-color: #e9ecef;
+    text-align: center;
+  }
+  .table-row .col-4 form button {
+    background-color: #f6ad3f;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    
+  }
+  .table-row .col-4 form button:hover {
+    background-color: #c82333;
+  }
+  
+  .col-1 {
+    flex-basis: 35%;
+  }
+  .col-2 {
+    flex-basis: 60%;
+  }
+  .col-3 {
+    flex-basis: 40%;
+  }
+  .col-4 {
+    flex-basis: 35%;
+  }
+   .col-5 {
+    flex-basis: 35%;
+   }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    text-align: left;
+}
+
+th {
+    background-color: #474646;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+tr:hover {
+    background-color: #e9ecef;
+}
+form {
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    width: calc(50% - 20px); /* Adjust width if needed */
+}
+
+form label {
+    width: 40%; /* Adjust width as needed */
+    margin-right: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 5px;
+}
+
+.add-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+}
+
+
+button {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.add-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.add-btn:hover {
+    background: #45a049;
+}
+
+.edit-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.edit-btn:hover{
+    background:#45a049;
+}
+
+.delete-btn {
+    background: #f4ae36;
+    color: white;
+}
+.delete-btn:hover{
+    background: #f1a115;
+
+}
+
+.trigger-btn{
+    background: #95A5A6;
+    color:rgb(14, 0, 0);
+}
+
+.trigger-btn:hover{
+    background: #110101;
+    
+}

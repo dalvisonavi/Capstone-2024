@@ -1,0 +1,102 @@
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #343a40;
+  margin: 0;
+  padding: 0;
+}
+
+#typewriter-header {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  overflow: hidden; /* Ensures the text is hidden until animated */
+  white-space: nowrap; /* Prevents text from wrapping */
+  border-right: 3px solid white; /* Creates a cursor effect */
+  animation: typing 2s steps(30, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+      width: 0; /* Start with no width */
+  }
+  to {
+      width: 100%; /* Expand to full width */
+  }
+}
+
+@keyframes blink-caret {
+  from, to {
+      border-color: transparent; /* Invisible cursor */
+  }
+  50% {
+      border-color: white; /* Visible cursor */
+  }
+}
+
+h1 {
+  color: #ffffff;
+}
+h2 {
+  color: #242525;
+  padding: 0 80px;
+}
+
+/* Responsive Table Styling */
+.responsive-table {
+  width: 80%;
+  margin-bottom: 20px;
+  padding: 0 80px;
+}
+.responsive-table li {
+  border-radius: 3px;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+}
+.table-header {
+  background-color: #95A5A6;
+  color: #121111;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.table-row:hover {
+  background-color: #e9ecef;
+}
+.table-row .col-4 form button {
+  background-color: #f6ad3f;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.table-row .col-4 form button:hover {
+  background-color: #c82333;
+}
+
+.col-1 {
+  flex-basis: 25%;
+}
+.col-2 {
+  flex-basis: 20%;
+}
+.col-3 {
+  flex-basis: 30%;
+}
+.col-4 {
+  flex-basis: 25%;
+}
+
+button {
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+}

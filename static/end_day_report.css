@@ -1,0 +1,224 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+#typewriter-header {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    overflow: hidden; /* Ensures the text is hidden until animated */
+    white-space: nowrap; /* Prevents text from wrapping */
+    border-right: 3px solid white; /* Creates a cursor effect */
+    animation: typing 2s steps(30, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0; /* Start with no width */
+    }
+    to {
+        width: 100%; /* Expand to full width */
+    }
+}
+
+@keyframes blink-caret {
+    from, to {
+        border-color: transparent; /* Invisible cursor */
+    }
+    50% {
+        border-color: white; /* Visible cursor */
+    }
+}
+/* Container for the Sidebar and Content */
+.container {
+    display: flex;
+}
+
+/* Left Sidebar */
+.sidebar {
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    width: 250px;
+    height: 100vh;
+}
+
+.sidebar h2 {
+    font-size: 22px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Right Sidebar (To Do List) */
+.sidebar-right {
+    background-color: #ecf0f1;
+    padding: 20px;
+    width: 250px;
+    height: 100vh;
+}
+
+.sidebar-right h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.sidebar-right ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar-right ul li {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* Main Content Area */
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+.content h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Table Styling */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.styled-table thead tr {
+    background-color: #34495e;
+    color: white;
+    text-align: left;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+.styled-table tbody tr:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #f1c40f;
+    cursor: pointer;
+}
+
+/* Sorting Arrows */
+.styled-table th {
+    cursor: pointer;
+    position: relative;
+}
+
+.styled-table th::after {
+    content: ' \25B2'; /* Default Up Arrow */
+    position: absolute;
+    right: 10px;
+    font-size: 12px;
+    visibility: hidden;
+}
+
+.styled-table th.sort-asc::after {
+    content: ' \25B2'; /* Up Arrow */
+    visibility: visible;
+}
+
+.styled-table th.sort-desc::after {
+    content: ' \25BC'; /* Down Arrow */
+    visibility: visible;
+}
+
+/* Filter & Download Section */
+.filter-sort {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.filter-sort input {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.filter-sort button {
+    background-color: #27ae60;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.filter-sort button:hover {
+    background-color: #2ecc71;
+}
+
+/* Pagination Styling */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    margin: 0 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination button:hover {
+    background-color: #3498db;
+}
+
+.pagination span {
+    font-size: 18px;
+    padding: 10px 20px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar, .sidebar-right {
+        width: 100%;
+        height: auto;
+    }
+}

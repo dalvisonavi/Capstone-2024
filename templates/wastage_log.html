@@ -1,0 +1,62 @@
+<!-- wastage_log.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wastage Log</title>
+    <link rel="stylesheet" href="static/wastage_log.css"> <!-- Link to CSS -->
+</head>
+<body>
+    {% include 'dashboard.html'%}
+    <header id="typewriter-header">
+        <h1>Wastage Log</h1>
+    </header>
+
+    <h2>Expired Raw Materials</h2>
+    <ul class="responsive-table">
+        <li class="table-header">
+            <div class="col col-1">Name</div>
+            <div class="col col-2">Quantity</div>
+            <div class="col col-3">Expiry Date</div>
+            <div class="col col-4">Action</div>
+        </li>
+        {% for item in raw_expired %}
+        <li class="table-row">
+            <div class="col col-1" data-label="Name">{{ item.name }}</div>
+            <div class="col col-2" data-label="Quantity">{{ item.quantity }}</div>
+            <div class="col col-3" data-label="Expiry Date">{{ item.expiry_date.strftime('%Y-%m-%d') }}</div>
+            <div class="col col-4" data-label="Action">
+                <form action="{{ url_for('delete_wastage', material_type='raw', item_id=item._id) }}" method="POST">
+                    <button type="submit"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Expired Baked Materials</h2>
+    <ul class="responsive-table">
+        <li class="table-header">
+            <div class="col col-1">Name</div>
+            <div class="col col-2">Quantity</div>
+            <div class="col col-3">Expiry Date</div>
+            <div class="col col-4">Action</div>
+        </li>
+        {% for item in baked_expired %}
+        <li class="table-row">
+            <div class="col col-1" data-label="Name">{{ item.name }}</div>
+            <div class="col col-2" data-label="Quantity">{{ item.quantity }}</div>
+            <div class="col col-3" data-label="Expiry Date">{{ item.expiry_date.strftime('%Y-%m-%d') }}</div>
+            <div class="col col-4" data-label="Action">
+                <form action="{{ url_for('delete_wastage', material_type='baked', item_id=item._id) }}" method="POST">
+                    <button type="submit"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <script src="static/script.js"></script><!-- Link to JavaScript -->
+</body>
+</html>

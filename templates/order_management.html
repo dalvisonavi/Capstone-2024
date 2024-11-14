@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='order_management.css') }}">
+</head>
+<body>
+    {% include 'dashboard.html'%}
+    <header id="typewriter-header">
+        <h1>Order Management</h1>
+    </header>
+
+    <div class="container">
+        <h2>Add New Supplier</h2>
+        <form id="supplierForm" method="POST" action="/order_management">
+            <div class="form-group">
+                <label for="supplierName">Supplier Name</label>
+                <input type="text" id="supplierName" name="supplier_name" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="supplierEmail">Supplier Email</label>
+                <input type="email" id="supplierEmail" name="contact_email" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="supplierPhone">Supplier Phone</label>
+                <input type="text" id="supplierPhone" name="contact_phone" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="productsSupplied">Products Supplied (Ex:flour, sugar)</label>
+                <input type="text" id="productsSupplied" name="products" required>
+            </div>
+        
+            <button type="submit" class="add-btn">Add Supplier</button>
+        </form>        
+
+        <h2>Existing Suppliers</h2>
+<ul class="responsive-table" id="supplierList">
+    <li class="table-header">
+        <div class="col col-1">Supplier Name</div>
+        <div class="col col-2">Email</div>
+        <div class="col col-3">Phone</div>
+        <div class="col col-4">Products Supplied</div>
+        <div class="col col-5">Action</div>
+    </li>
+    {% for supplier in suppliers %}
+    <li class="table-row" data-id="{{ supplier['_id'] }}">
+        <div class="col col-1" data-label="Supplier Name">{{ supplier['supplier_name'] }}</div>
+        <div class="col col-2" data-label="Email">{{ supplier['contact_email'] }}</div>
+        <div class="col col-3" data-label="Phone">{{ supplier['contact_phone'] }}</div>
+        <div class="col col-4" data-label="Products Supplied">{{ supplier['products'] | join(', ') }}</div>
+        <div class="col col-5" data-label="Action">
+            <button class="edit-btn" onclick="editSupplier('{{ supplier['_id'] }}', this)">
+                <!-- Edit Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                    <path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
+                </svg>
+            </button>
+            <button class="delete-btn" onclick="deleteSupplier('{{ supplier['_id'] }}')">
+                <!-- Delete Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                    <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                </svg>
+            </button>
+        </div>
+    </li>
+    {% else %}
+    <li class="table-row">
+        <div class="col" colspan="5">No suppliers found.</div>
+    </li>
+    {% endfor %}
+</ul>
+
+
+<h2>Low Stock Items</h2>
+<ul class="responsive-table" id="lowStockList">
+    <li class="table-header">
+        <div class="col col-1">Product Name</div>
+        <div class="col col-2">Current Stock</div>
+        <div class="col col-3">Triggers</div>
+    </li>
+    {% for item in low_stock_items %}
+    <li class="table-row" data-id="{{ item['_id'] }}">
+        <div class="col col-1" data-label="Product Name">{{ item['name'] }}</div>
+        <div class="col col-2" data-label="Current Stock">{{ item['quantity'] }}</div>
+        <div class="col col-3" data-label="Triggers">
+            <button class="trigger-btn" onclick="triggerOrder('{{ item['_id'] }}')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/></svg></button>
+        </div>
+    </li>
+    {% else %}
+    <li class="table-row">
+        <div class="col" colspan="3">No low stock items found.</div>
+    </li>
+    {% endfor %}
+</ul>
+</div>
+    <script src="{{ url_for('static', filename='order_management.js') }}"></script>
+</body>
+</html>
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
