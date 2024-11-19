@@ -14,47 +14,50 @@
     
     <div class="container">
         <main class="content">
-            <h1>End of Day Report</h1>
             <!-- Filter and Sorting Options -->
             <div class="filter-sort">
-                <input type="text" id="searchInput" placeholder="Search product name..." />
                 <a href="{{ url_for('download_csv') }}"><button id="csvDownload">Download CSV</button></a>
                 <a href="{{ url_for('download_pdf') }}"><button id="pdfDownload">Download PDF</button></a>
             </div>
-            <table class="styled-table" id="report-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable(0)">Product Name &#x25B2;&#x25BC;</th>
-                        <th onclick="sortTable(1)">Stock Quantity &#x25B2;&#x25BC;</th>
-                        <th onclick="sortTable(2)">Sold Quantity &#x25B2;&#x25BC;</th>
-                        <th onclick="sortTable(3)">Expiry Date &#x25B2;&#x25BC;</th>
-                    </tr>
-                </thead>
-                <tbody id="report-body">
-                    {% for item in report_data %}
-                    <tr>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>{{ item.sold_quantity }}</td>
-                        <td>{{ item.expiry_date }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <div class="pagination">
-                <button id="prevPage">Prev</button>
-                <span id="pageNumber">1</span>
-                <button id="nextPage">Next</button>
-            </div>
+            <ul class="responsive-table" id="report-table">
+                <li class="table-header">
+                    <div class="col col-1" onclick="sortTable(0)">Product Name </div>
+                    <div class="col col-2" onclick="sortTable(1)">Stock Quantity</div>
+                    <div class="col col-3" onclick="sortTable(2)">Sold Quantity</div>
+                    <div class="col col-4" onclick="sortTable(3)">Expiry Date </div>
+                </li>
+                {% for item in report_data %}
+                <li class="table-row">
+                    <div class="col col-1" data-label="Product Name">{{ item.name }}</div>
+                    <div class="col col-2" data-label="Stock Quantity">{{ item.quantity }}</div>
+                    <div class="col col-3" data-label="Sold Quantity">{{ item.sold_quantity }}</div>
+                    <div class="col col-4" data-label="Expiry Date">{{ item.expiry_date }}</div>
+                </li>
+                {% else %}
+                <li class="table-row">
+                    <div class="col" colspan="4">No report data available.</div>
+                </li>
+                {% endfor %}
+            </ul>
         </main>
         <aside class="sidebar-right">
             <h2>To Do</h2>
             <ul>
-                <li><input type="checkbox"> Restock raw materials</li>
-                <li><input type="checkbox"> Review today's orders</li>
-                <li><input type="checkbox"> Check expiration dates</li>
-                <li><input type="checkbox"> Send customer emails</li>
-                <li><input type="checkbox"> Log wastage for today</li>
+                <form action="/save_end_day" method="post">
+                    <label for="end_day_product">Baked Product:</label>
+                    <select id="end_day_product" name="end_day_product" required>
+                        {% for item in report_data %}
+                        <option value="{{ item._id }}">{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                
+                    <label for="sold_quantity">Sold Quantity:</label>
+                    <input type="number" id="sold_quantity" name="sold_quantity" min="0" required>
+                
+                    <button type="submit">Save</button>
+                </form>
+                
+                          
             </ul>
         </aside>
     </div>

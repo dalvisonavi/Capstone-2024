@@ -35,6 +35,7 @@ suppliers_collection = db['suppliers']
 rawmaterials_collection = db['rawmaterials']
 baked_collection = db['bakedmaterials']
 inventory_collection = db['inventory']
+end_day_collection = db['end_day']
 
 # Initialize database
 DBConfig()
@@ -256,33 +257,19 @@ def edit_baked_product(item_id):
 @app.route('/delete_baked_product/<item_id>', methods=['DELETE'])
 def delete_baked_product(item_id):
     try:
-        # Check if the provided item_id is a valid ObjectId format
-        object_id = ObjectId(item_id)
+        print(f"Received request to delete item with ID: {item_id}")
+
+        # Query using `_id` as a string
+        result = baked_collection.delete_one({'_id': ObjectId(item_id)})
+        if result.deleted_count == 1:
+            print(f"Item with ID {item_id} deleted successfully.")
+            return jsonify({'message': 'Baked product deleted successfully!'}), 200
+        else:
+            print(f"Item with ID {item_id} not found.")
+            return jsonify({'message': 'Baked product not found!'}), 404
     except Exception as e:
-        return jsonify({'message': f'Invalid ObjectId format: {str(e)}'}), 400
-
-    # Log the object_id to confirm it's correct
-    print(f"Attempting to delete item with ID: {item_id}")
-
-    # Try to find the item first to check if it's in the database
-    item = baked_collection.find_one({'_id': object_id})
-    
-    # Log the result of the find query
-    if item:
-        print(f"Item found: {item}")
-    else:
-        print("Item not found")
-
-    if not item:
-        return jsonify({'message': 'Baked product not found!'}), 404
-
-    # Delete the item if found
-    result = baked_collection.delete_one({'_id': object_id})
-    if result.deleted_count == 1:
-        return jsonify({'message': 'Baked product deleted successfully!'}), 200
-    else:
-        return jsonify({'message': 'Error deleting baked product from database!'}), 500
-
+        print(f"Error occurred: {str(e)}")
+        return jsonify({'message': f'Error deleting baked product: {str(e)}'}), 500
 
 @app.route('/update_baked_product/<item_id>', methods=['POST'])
 def update_baked_product(item_id):
@@ -318,6 +305,7 @@ def update_baked_product(item_id):
 
     if result.modified_count == 1:
         return jsonify({'message': 'Baked product updated successfully!'}), 200
+        
     else:
         return jsonify({'message': 'No changes made to the baked product.'}), 400
 
@@ -568,27 +556,84 @@ def delete_wastage(material_type, item_id):
     collection.delete_one({"_id": ObjectId(item_id)})
     return redirect(url_for('wastage_log'))
 
+    
 @app.route('/end_day_report')
 def end_day_report():
-    # Fetch data from MongoDB and structure it for display
-    data = list(baked_collection.find({}, {"_id": 0, "name": 1, "quantity": 1, "sold_quantity": 1, "expiry_date": 1}))
-    
-    # Pass data to the template
-    return render_template("end_day_report.html", report_data=data)
+    try:
+        # Step 1: Insert baked items into end_day collection
+        baked_items = list(baked_collection.find())  # Fetch all baked items
+        
+        for item in baked_items:
+            # Check if the item already exists in the end_day collection
+            if not end_day_collection.find_one({'_id': item['_id']}):
+                end_day_collection.insert_one(item)
 
+        # Step 2: Prepare data for the template
+        report_data = list(
+            end_day_collection.find({}, {"_id": 0, "name": 1, "quantity": 1, "sold_quantity": 1, "expiry_date": 1})
+        )
+
+        # Step 3: Render the template with the data
+        return render_template("end_day_report.html", report_data=report_data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/save_end_day', methods=['POST'])
+def save_end_day():
+    try:
+        # Get form data
+        end_day_product_id = request.form.get('product')  # Fetch product ID from the dropdown
+        sold_quantity = request.form.get('sold_quantity')
+
+        # Debugging: Print form data to console
+        print(f"end_day_product_id: {end_day_product_id}, sold_quantity: {sold_quantity}")
+
+        # Check if required data is provided
+        if not end_day_product_id or not sold_quantity:
+            return jsonify({'error': 'Missing product or sold quantity!'}), 400
+
+        # Convert sold_quantity to integer
+        sold_quantity = int(sold_quantity)
+
+        # Check if the product already exists in the end_day collection
+        existing_entry = end_day_collection.find_one({'_id': ObjectId(end_day_product_id)})
+
+        if existing_entry:
+            # Update the existing entry's sold_quantity
+            result = end_day_collection.update_one(
+                {'_id': ObjectId(end_day_product_id)},
+                {'$set': {'sold_quantity': sold_quantity}}
+            )
+            if result.matched_count == 0:
+                return jsonify({'error': 'Product update failed!'}), 500
+        else:
+            # Insert new entry if it does not exist
+            new_entry = {
+                '_id': ObjectId(end_day_product_id),
+                'sold_quantity': sold_quantity
+            }
+            end_day_collection.insert_one(new_entry)
+
+        # Redirect back to the end day report page
+        return redirect(url_for('end_day_report'))
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
 # Additional route for CSV download (optional)
 @app.route('/download_csv')
 def download_csv():
     items = baked_collection.find()
     
     def generate():
-        data = ['Product Name, Stock Quantity, Sold Quantity, Expiry Date\n']  # Header row
+        data = ['Product Name, Stock Quantity, Sold Quantity\n']  # Header row
         for item in items:
-            line = f"{item['name']},{item['quantity']},{item['sold_quantity']},{item['expiry_date']}\n"
+            line = f"{item['name']},{item['quantity']},{item['sold_quantity']}\n"
             data.append(line)
         return data
 
     return Response(generate(), mimetype='text/csv', headers={"Content-Disposition": "attachment;filename=report.csv"})
+
 
 # Additional route for PDF download (optional)
 @app.route('/download_pdf')
@@ -639,6 +684,8 @@ def download_pdf():
         mimetype="application/pdf",
         headers={"Content-Disposition": f"attachment;filename=end_day_report_{datetime.now().date()}.pdf"}
     )
+
+
 
 
 # Ensure the app runs

@@ -3,6 +3,7 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+    color:#343140;
 }
 
 #typewriter-header {
@@ -40,38 +41,8 @@ body {
 }
 
 /* Left Sidebar */
-.sidebar {
-    background-color: #2c3e50;
-    color: white;
-    padding: 20px;
-    width: 250px;
-    height: 100vh;
-}
 
-.sidebar h2 {
-    font-size: 22px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-}
 
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    margin: 15px 0;
-}
-
-.sidebar ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-}
-
-.sidebar ul li a:hover {
-    text-decoration: underline;
-}
 
 /* Right Sidebar (To Do List) */
 .sidebar-right {
@@ -107,118 +78,109 @@ body {
     margin-bottom: 20px;
 }
 
-/* Table Styling */
-.styled-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    font-size: 16px;
-}
-
-.styled-table thead tr {
-    background-color: #34495e;
-    color: white;
-    text-align: left;
-}
-
-.styled-table th, .styled-table td {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-}
-
-.styled-table tbody tr:nth-child(even) {
-    background-color: #f3f3f3;
-}
-
-.styled-table tbody tr:hover {
-    background-color: #f1c40f;
-    cursor: pointer;
-}
-
-/* Sorting Arrows */
-.styled-table th {
-    cursor: pointer;
-    position: relative;
-}
-
-.styled-table th::after {
-    content: ' \25B2'; /* Default Up Arrow */
-    position: absolute;
-    right: 10px;
-    font-size: 12px;
-    visibility: hidden;
-}
-
-.styled-table th.sort-asc::after {
-    content: ' \25B2'; /* Up Arrow */
-    visibility: visible;
-}
-
-.styled-table th.sort-desc::after {
-    content: ' \25BC'; /* Down Arrow */
-    visibility: visible;
-}
-
 /* Filter & Download Section */
 .filter-sort {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-bottom: 20px;
 }
 
-.filter-sort input {
-    padding: 8px;
-    width: 200px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
 
 .filter-sort button {
     background-color: #27ae60;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 40px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-left: 10px;
 }
 
 .filter-sort button:hover {
     background-color: #2ecc71;
 }
-
-/* Pagination Styling */
-.pagination {
+.responsive-table {
+    width: 90%;
+    margin-bottom: 20px;
+    padding: 0px;
+    text-align:center;
+    margin-left: auto;
+    margin-right:0;
+  }
+  .responsive-table li {
+    border-radius: 3px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+  }
+  .table-header {
+    background-color: #95A5A6;
+    color: #121111;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align:center;
+  }
+  .table-row:hover {
+    background-color: #e9ecef;
     text-align: center;
-    margin-top: 20px;
-}
-
-.pagination button {
-    padding: 10px 15px;
-    background-color: #2980b9;
+  }
+  .table-row .col-4 form button {
+    background-color: #f6ad3f;
     color: white;
     border: none;
-    margin: 0 5px;
-    border-radius: 4px;
+    padding: 8px 12px;
     cursor: pointer;
+    transition: background-color 0.3s;
+    
+  }
+  .table-row .col-4 form button:hover {
+    background-color: #c82333;
+  }
+  
+  .col-1 {
+    flex-basis: 35%;
+  }
+  .col-2 {
+    flex-basis: 60%;
+  }
+  .col-3 {
+    flex-basis: 40%;
+  }
+  .col-4 {
+    flex-basis: 35%;
+  }
+   .col-5 {
+    flex-basis: 35%;
+   }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.pagination button:hover {
-    background-color: #3498db;
+th, td {
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    text-align: left;
 }
 
-.pagination span {
-    font-size: 18px;
-    padding: 10px 20px;
+th {
+    background-color: #474646;
+    color: white;
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .sidebar, .sidebar-right {
-        width: 100%;
-        height: auto;
-    }
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+tr:hover {
+    background-color: #e9ecef;
+}
+form {
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
 }
