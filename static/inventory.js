@@ -122,6 +122,7 @@ function saveItem(itemId, button, originalName, originalQuantity, originalExpiry
         } else {
             alert(data.message);
         }
+        window.location.reload();
     })
     .catch(error => {
         console.error('Error:', error);
@@ -143,6 +144,7 @@ function deleteItem(_id) {
                     row.remove(); // Remove the item from the table
                 }
                 alert(data.message);
+                window.location.reload();
             } else {
                 alert(data.message);
             }
@@ -180,10 +182,10 @@ document.getElementById('bakedProductForm').onsubmit = function (event) {
             addBakedProductToTable(data.item);
             this.reset();
             alert('Baked product added successfully!');
-            window.location.reload();
         } else {
             alert('Error adding product: ' + data.message);
         }
+        window.location.reload();
     })
     .catch(error => {
         console.error('Error processing:', error);
